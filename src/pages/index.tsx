@@ -1,20 +1,21 @@
 import type { NextPage } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
-import {trpc} from "../utils/trpc";
+import { useUserContext } from "../context/user.context";
+import LoginForm from "../components/LoginForm";
+import Link from "next/link";
 
 const Home: NextPage = () => {
-  const {data,error,isLoading} = trpc.useQuery(['hello'])
-  if(isLoading) {
-    return <p>Loading...</p>
-  }
-  if(error) {
-    return <div>{JSON.stringify(error)}</div>
+ const user = useUserContext()
+  console.log (user)
+  if(!user) {
+    return <LoginForm/>
   }
   return (
     <div>
-      {JSON.stringify(data)}
+      <p>Hi!! {user.name}</p>
+      <div>
+        <p>Contents</p>
+        <Link href={'/post/new'}>Create Post</Link>
+      </div>
     </div>
   )
 }
